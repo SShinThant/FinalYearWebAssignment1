@@ -22,7 +22,17 @@ Route::get('/home', function () {
     return view('home');
 });
 
+
 Route::get('/cafe',[CafeController::class, 'index']);
+
+Route::post('/cafeform/create',[CafeController::class, 'store']);
+Route::get('/cafeform', function () {
+    return view('cafeform');
+});
+
+Route::get('/updateform/{coffee}', [CafeController::class, 'showUpdateForm']);
+Route::put('/updateform/{coffee}', [CafeController::class, 'UpdateTheForm']);
+Route::delete('/deleteitem/{coffee}', [CafeController::class, 'DeleteItem']);
 
 Route::get('/description', function () {
     return view('description');

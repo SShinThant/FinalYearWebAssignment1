@@ -10,6 +10,29 @@ class CafeController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function UpdateTheForm(Cafe $coffee, Request $request) {
+        $incomingFields = $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
+        
+
+        $coffee->update($incomingFields);
+        return redirect('/cafe');
+    }
+
+    public function showUpdateForm(Cafe $coffee) {
+        return view('updateform', ['coffee' => $coffee]);
+    }
+
+    public function DeleteItem(Cafe $coffee) {
+        $coffee->delete();
+
+        return redirect('/cafe');
+    }
+    
     public function index()
     {
         
@@ -33,7 +56,11 @@ class CafeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $newCoffee = new Cafe;
+        $newCoffee->name = $request->name;
+        $newCoffee->description = $request->description;
+        $newCoffee->save();
+        return redirect('/cafe')->with('status','Item Created Sucessfully');
     }
 
     /**
@@ -49,7 +76,8 @@ class CafeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // $coffees = Cafe::find($id);
+        // return view('cafe.edit')->with('coffees', $coffees);
     }
 
     /**
@@ -57,7 +85,10 @@ class CafeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'name'=> 'required|string|max:255',
+            'description'=>'required'
+        ]);
     }
 
     /**
@@ -65,6 +96,7 @@ class CafeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Cafe::destroy($id);
+        // return redirect('/cafe')->with('flash_message', 'Item Deleted!');
     }
 }
