@@ -11,7 +11,60 @@ class CafeController extends Controller
      * Display a listing of the resource.
      */
 
-    public function UpdateTheForm(Cafe $coffee, Request $request) {
+        public function get_coffees() {
+        $coffees = Cafe::get();
+        return response()->json([
+            'message'=>'Cafe_List',
+            'status'=>'success',
+            'coffees'=> $coffees
+        ]);
+    }
+    
+            public function update_coffees($id, Request $request) {
+            $request->validate ([
+                'name'=> 'required|string|max:255',
+                'description' => 'required|string|max:255'
+            ]);
+            $coffees=Cafe::find($id);
+            $coffees->name=$request->name;
+            $coffees->description=$request->description;
+            $coffees->save();
+
+            return response()->json([
+                'message'=>'Cafe updated',
+                'data'=>$coffees
+            ]);
+        }
+
+        public function create_coffees(Request $request) {
+        $coffees = new Cafe();
+        Cafe::create([
+            'name'=> $request->name,
+            'description'=> $request->description
+        ]);
+
+        return response()->json([
+            'message'=>'Cafe',
+            'status'=>'success',
+            'coffee'=>$coffees
+        ]);
+
+        
+        
+        }
+
+        public function delete_coffees($id) {
+            $coffee = Cafe::find($id);
+            $coffee->delete();
+
+            return response()->json([
+                'message'=> "Deleted"
+            ]);
+        }
+
+    ////////////////////////////
+
+        public function UpdateTheForm(Cafe $coffee, Request $request) {
         $incomingFields = $request->validate([
             'name' => 'required',
             'description' => 'required'
