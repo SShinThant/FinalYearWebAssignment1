@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cafe;
+use Illuminate\Support\Facades\Validator;
 
 class CafeController extends Controller
 {
@@ -88,6 +89,7 @@ class CafeController extends Controller
     
     public function index()
     {
+        //$coffees = Cafe::paginate(5);
         
         $coffees = Cafe::get();
         return view('cafe',[
@@ -101,7 +103,7 @@ class CafeController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -109,12 +111,42 @@ class CafeController extends Controller
      */
     public function store(Request $request)
     {
+         $incomingFields = $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+         ]);
+
+        
+
+        // $coffee->update($incomingFields);
+        // return redirect('/cafe');
+
+
+        // $validator = Validator::make($request->all(), [
+        //     'name' => 'required',
+        //     'description' => 'required',
+        // ]);
+        
+        // if ($validator->fails()) {
+        //     return redirect()->route('coffee.index')
+        //         ->with('error', 'Validation failed')
+        //         ->withErrors($validator)
+        //         ->withInput();
+        // }
+
+
+
+
+
         $newCoffee = new Cafe;
         $newCoffee->name = $request->name;
         $newCoffee->description = $request->description;
         $newCoffee->save();
         return redirect('/cafe')->with('status','Item Created Sucessfully');
+        // return redirect()->route('coffee.index')
+        //     ->with('success', 'Coffee Created');
     }
+
 
     /**
      * Display the specified resource.
@@ -138,10 +170,10 @@ class CafeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $request->validate([
-            'name'=> 'required|string|max:255',
-            'description'=>'required'
-        ]);
+        // $request->validate([
+        //     'name'=> 'required|string|max:255',
+        //     'description'=>'required'
+        // ]);
     }
 
     /**

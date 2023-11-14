@@ -30,6 +30,7 @@ Route::get('/cafeform', function () {
     return view('cafeform');
 });
 
+
 Route::get('/updateform/{coffee}', [CafeController::class, 'showUpdateForm']);
 Route::put('/updateform/{coffee}', [CafeController::class, 'UpdateTheForm']);
 Route::delete('/deleteitem/{coffee}', [CafeController::class, 'DeleteItem']);
